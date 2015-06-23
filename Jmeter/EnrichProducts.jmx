@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="2.6" jmeter="2.11 r1554548">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1391124843000</longProp>
+        <longProp name="ThreadGroup.end_time">1391124843000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="host" elementType="Argument">
+              <stringProp name="Argument.name">host</stringProp>
+              <stringProp name="Argument.value">localhost</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="port" elementType="Argument">
+              <stringProp name="Argument.name">port</stringProp>
+              <stringProp name="Argument.value">8983</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="path" elementType="Argument">
+              <stringProp name="Argument.name">path</stringProp>
+              <stringProp name="Argument.value"></stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="searchconfigId" elementType="Argument">
+              <stringProp name="Argument.name">searchconfigId</stringProp>
+              <stringProp name="Argument.value">${__Random(100000,60000003, &apos;LOTTERY&apos;)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="password2" elementType="Argument">
+              <stringProp name="Argument.name">password2</stringProp>
+              <stringProp name="Argument.value">9ff4cf89-135e-4ae0-b480-833fb55c6f34</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="customerId" elementType="Argument">
+              <stringProp name="Argument.name">customerId</stringProp>
+              <stringProp name="Argument.value">${__Random(100000,60000003, &apos;LOTTERY&apos;)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="email" elementType="Argument">
+              <stringProp name="Argument.name">email</stringProp>
+              <stringProp name="Argument.value">${__Random(100000,60000003, &apos;LOTTERY&apos;)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="promotionId" elementType="Argument">
+              <stringProp name="Argument.name">promotionId</stringProp>
+              <stringProp name="Argument.value">${__Random(100000,60000003, &apos;LOTTERY&apos;)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="productId2" elementType="Argument">
+              <stringProp name="Argument.name">productId2</stringProp>
+              <stringProp name="Argument.value">9559</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="promotionId2" elementType="Argument">
+              <stringProp name="Argument.name">promotionId2</stringProp>
+              <stringProp name="Argument.value">${__Random(100000,60000003, &apos;LOTTERY&apos;)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="offerId1" elementType="Argument">
+              <stringProp name="Argument.name">offerId1</stringProp>
+              <stringProp name="Argument.value">${__Random(100000,60000003, &apos;LOTTERY&apos;)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="offerId2" elementType="Argument">
+              <stringProp name="Argument.name">offerId2</stringProp>
+              <stringProp name="Argument.value">${__Random(100000,60000003, &apos;LOTTERY&apos;)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="offerId3" elementType="Argument">
+              <stringProp name="Argument.name">offerId3</stringProp>
+              <stringProp name="Argument.value">${__Random(100000,60000003, &apos;LOTTERY&apos;)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="productId1" elementType="Argument">
+              <stringProp name="Argument.name">productId1</stringProp>
+              <stringProp name="Argument.value">520cac74-9874-4909-94be-1fff7395eb63</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="solrport" elementType="Argument">
+              <stringProp name="Argument.name">solrport</stringProp>
+              <stringProp name="Argument.value">8983</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="solrhost" elementType="Argument">
+              <stringProp name="Argument.name">solrhost</stringProp>
+              <stringProp name="Argument.value">localhost</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="productPort" elementType="Argument">
+              <stringProp name="Argument.name">productPort</stringProp>
+              <stringProp name="Argument.value">9009</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="tenantId" elementType="Argument">
+              <stringProp name="Argument.name">tenantId</stringProp>
+              <stringProp name="Argument.value">${__Random(100000,60000003, &apos;LOTTERY&apos;)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="tenantPort" elementType="Argument">
+              <stringProp name="Argument.name">tenantPort</stringProp>
+              <stringProp name="Argument.value">9001</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="rottenTomatoesPort" elementType="Argument">
+              <stringProp name="Argument.name">rottenTomatoesPort</stringProp>
+              <stringProp name="Argument.value">9022</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+          <stringProp name="ConstantTimer.delay">1000</stringProp>
+        </ConstantTimer>
+        <hashTree/>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">AuthenticationToken</stringProp>
+              <stringProp name="Header.value">${sessionId}</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-type</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Accept-Encoding</stringProp>
+              <stringProp name="Header.value">gzip,deflate</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Create Tenant" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &quot;firstName&quot; : &quot;y45oyoyo&quot;,  &quot;lastName&quot; : &quot;ri0rrrzgs000e&quot;,&quot;password&quot;:&quot;asss&quot;,&quot;email&quot;:&quot;${email}&quot;,&quot;a&quot;:{&quot;d&quot;:&quot;dldld&quot;}}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${tenantPort}</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/v1/tenant</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Login" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{  &quot;password&quot;:&quot;asss&quot;,&quot;email&quot;:&quot;${email}&quot;}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${tenantPort}</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/v1/tenant/login?apiKey=4646454</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+            <stringProp name="RegexExtractor.refname">tenantId</stringProp>
+            <stringProp name="RegexExtractor.regex">&quot;id&quot;:&quot;([a-z0-9-]+?)&quot;,</stringProp>
+            <stringProp name="RegexExtractor.template">$1$</stringProp>
+            <stringProp name="RegexExtractor.default">REGEX_FAILED</stringProp>
+            <stringProp name="RegexExtractor.match_number">1</stringProp>
+          </RegexExtractor>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CreateProduct" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;ShortTitle&quot;:&quot;Saw&quot;,&quot;PurchaseOptionList&quot;:[{&quot;PurchaseOptionType&quot;:&quot;Subscription&quot;,&quot;MediaList&quot;:[],&quot;Price&quot;:&quot;7.00&quot;,&quot;PurchaseOptionID&quot;:&quot;XPPK0000000000132449-000001&quot;,&quot;PurchaseOptionName&quot;:&quot;Subscription&quot;}],&quot;Studio&quot;:null,&quot;ReleaseYear&quot;:&quot;1990&quot;,&quot;ProductID&quot;:&quot;e81721a7-0990-469d-afba-3e67df118fea&quot;,&quot;ImageList&quot;:[{&quot;ImageURL&quot;:&quot;https://s3.amazonaws.com/libertas/faaa3ea2-1c58-4abf-a66a-f3598f394512/Dima6_BMW2.jpeg&quot;,&quot;ImageType&quot;:&quot;Thumbnail&quot;,&quot;ImageWidth&quot;:284,&quot;ImageHeight&quot;:177}],&quot;SEOURL&quot;:&quot;http://dit.redboxinstant.net/movies/infra-man&quot;,&quot;CriticID&quot;:null,&quot;DeliveryTypes&quot;:[{&quot;mediaFormats&quot;:[{&quot;IsComingSoon&quot;:&quot;FALSE&quot;,&quot;IsNewRelease&quot;:&quot;FALSE&quot;,&quot;IsLeaving&quot;:&quot;FALSE&quot;,&quot;ReleaseDate&quot;:&quot;1975-01-01T00:00:00-06:00&quot;,&quot;FormatType&quot;:&quot;SD&quot;}],&quot;Ranking&quot;:&quot;99999&quot;,&quot;TypeValue&quot;:&quot;Subscription&quot;}],&quot;SubtitleList&quot;:[],&quot;PreviewList&quot;:{},&quot;LongDescription&quot;:&quot;The world of Cars takes flight in Planes, Disney&apos;s high-flying animated comedy revved up with action and adventure. Join Dusty, a crop duster with sky-high dreams and a once-in-a-lifetime chance to take on the world&apos;s fastest flyers in the greatest air race ever. Dusty has a huge heart but two big problems... he&apos;s not exactly built for speed, plus he&apos;s afraid of heights. His courage is put to the ultimate test as this unlikely hero aims higher than he ever imagined. With a little help from his friends, Dusty finds the courage to be more than he was built for and the inspiration to soar.&quot;,&quot;Actors&quot;:[&quot;Dane Cook&quot;,&quot;Stacy Keach&quot;,&quot;Brad Garret&quot;,&quot;Teri Hatcher&quot;,&quot;Julia Louis-Dreyfus&quot;],&quot;RatingReason&quot;:null,&quot;SortTitle&quot;:&quot;Planes&quot;,&quot;Videos&quot;:{},&quot;ProductType&quot;:&quot;Movie&quot;,&quot;Producers&quot;:[],&quot;RequiredAddonIDs&quot;:null,&quot;AverageUserRating&quot;:&quot;0&quot;,&quot;AltCode&quot;:&quot;XPPK0000000000132449&quot;,&quot;Title&quot;:&quot;Saw&quot;,&quot;Languages&quot;:[],&quot;ShortDescription&quot;:&quot;The world of Cars takes flight in Planes, Disney&apos;s high-flying animated comedy revved up with action and adventure. Join Dusty, a crop duster with sky-high dreams and a once-in-a-lifetime chance to take on the world&apos;s fastest flyers in the greatest air race ever. Dusty has a huge heart but two big problems... he&apos;s not exactly built for speed, plus he&apos;s afraid of heights. His courage is put to the ultimate test as this unlikely hero aims higher than he ever imagined. With a little help from his friends, Dusty finds the courage to be more than he was built for and the inspiration to soar.&quot;,&quot;BoxOfficeGross&quot;:&quot;-99999999&quot;,&quot;BlackoutIndicator&quot;:&quot;False&quot;,&quot;Directors&quot;:[],&quot;Network&quot;:null,&quot;Rating&quot;:&quot;PG&quot;,&quot;BlackoutWindowStart&quot;:null,&quot;RequiredPackageID&quot;:&quot;000001&quot;,&quot;RunningTime&quot;:&quot;01:20:00&quot;,&quot;Genres&quot;:[&quot;Animation&quot;],&quot;BlackoutWindowEnd&quot;:null,&quot;ClosedCaption&quot;:&quot;False&quot;}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${productPort}</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">${path}/v1/admin/product/Bind${__Random(100000,60000003, &apos;LOTTERY&apos;)}?apiKey=${tenantId}</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CreateProduct" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;ShortTitle&quot;:&quot;Nightcrawler&quot;,&quot;PurchaseOptionList&quot;:[{&quot;PurchaseOptionType&quot;:&quot;Subscription&quot;,&quot;MediaList&quot;:[],&quot;Price&quot;:&quot;7.00&quot;,&quot;PurchaseOptionID&quot;:&quot;XPPK0000000000132449-000001&quot;,&quot;PurchaseOptionName&quot;:&quot;Subscription&quot;}],&quot;Studio&quot;:null,&quot;ReleaseYear&quot;:&quot;1990&quot;,&quot;ProductID&quot;:&quot;e81721a7-0990-469d-afba-3e67df118fea&quot;,&quot;ImageList&quot;:[{&quot;ImageURL&quot;:&quot;https://s3.amazonaws.com/libertas/faaa3ea2-1c58-4abf-a66a-f3598f394512/Dima6_BMW2.jpeg&quot;,&quot;ImageType&quot;:&quot;Thumbnail&quot;,&quot;ImageWidth&quot;:284,&quot;ImageHeight&quot;:177}],&quot;SEOURL&quot;:&quot;http://dit.redboxinstant.net/movies/infra-man&quot;,&quot;CriticID&quot;:null,&quot;DeliveryTypes&quot;:[{&quot;mediaFormats&quot;:[{&quot;IsComingSoon&quot;:&quot;FALSE&quot;,&quot;IsNewRelease&quot;:&quot;FALSE&quot;,&quot;IsLeaving&quot;:&quot;FALSE&quot;,&quot;ReleaseDate&quot;:&quot;1975-01-01T00:00:00-06:00&quot;,&quot;FormatType&quot;:&quot;SD&quot;}],&quot;Ranking&quot;:&quot;99999&quot;,&quot;TypeValue&quot;:&quot;Subscription&quot;}],&quot;SubtitleList&quot;:[],&quot;PreviewList&quot;:{},&quot;LongDescription&quot;:&quot;The world of Cars takes flight in Planes, Disney&apos;s high-flying animated comedy revved up with action and adventure. Join Dusty, a crop duster with sky-high dreams and a once-in-a-lifetime chance to take on the world&apos;s fastest flyers in the greatest air race ever. Dusty has a huge heart but two big problems... he&apos;s not exactly built for speed, plus he&apos;s afraid of heights. His courage is put to the ultimate test as this unlikely hero aims higher than he ever imagined. With a little help from his friends, Dusty finds the courage to be more than he was built for and the inspiration to soar.&quot;,&quot;Actors&quot;:[&quot;Dane Cook&quot;,&quot;Stacy Keach&quot;,&quot;Brad Garret&quot;,&quot;Teri Hatcher&quot;,&quot;Julia Louis-Dreyfus&quot;],&quot;RatingReason&quot;:null,&quot;SortTitle&quot;:&quot;Planes&quot;,&quot;Videos&quot;:{},&quot;ProductType&quot;:&quot;Movie&quot;,&quot;Producers&quot;:[],&quot;RequiredAddonIDs&quot;:null,&quot;AverageUserRating&quot;:&quot;0&quot;,&quot;AltCode&quot;:&quot;XPPK0000000000132449&quot;,&quot;Title&quot;:&quot;Nightcrawler&quot;,&quot;Languages&quot;:[],&quot;ShortDescription&quot;:&quot;The world of Cars takes flight in Planes, Disney&apos;s high-flying animated comedy revved up with action and adventure. Join Dusty, a crop duster with sky-high dreams and a once-in-a-lifetime chance to take on the world&apos;s fastest flyers in the greatest air race ever. Dusty has a huge heart but two big problems... he&apos;s not exactly built for speed, plus he&apos;s afraid of heights. His courage is put to the ultimate test as this unlikely hero aims higher than he ever imagined. With a little help from his friends, Dusty finds the courage to be more than he was built for and the inspiration to soar.&quot;,&quot;BoxOfficeGross&quot;:&quot;-99999999&quot;,&quot;BlackoutIndicator&quot;:&quot;False&quot;,&quot;Directors&quot;:[],&quot;Network&quot;:null,&quot;Rating&quot;:&quot;PG&quot;,&quot;BlackoutWindowStart&quot;:null,&quot;RequiredPackageID&quot;:&quot;000001&quot;,&quot;RunningTime&quot;:&quot;01:20:00&quot;,&quot;Genres&quot;:[&quot;Animation&quot;],&quot;BlackoutWindowEnd&quot;:null,&quot;ClosedCaption&quot;:&quot;False&quot;}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${productPort}</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">${path}/v1/admin/product/Bind${__Random(100000,60000003, &apos;LOTTERY&apos;)}?apiKey=${tenantId}</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CreateProduct" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;ShortTitle&quot;:&quot;Horns&quot;,&quot;PurchaseOptionList&quot;:[{&quot;PurchaseOptionType&quot;:&quot;Subscription&quot;,&quot;MediaList&quot;:[],&quot;Price&quot;:&quot;7.00&quot;,&quot;PurchaseOptionID&quot;:&quot;XPPK0000000000132449-000001&quot;,&quot;PurchaseOptionName&quot;:&quot;Subscription&quot;}],&quot;Studio&quot;:null,&quot;ReleaseYear&quot;:&quot;1990&quot;,&quot;ProductID&quot;:&quot;e81721a7-0990-469d-afba-3e67df118fea&quot;,&quot;ImageList&quot;:[{&quot;ImageURL&quot;:&quot;https://s3.amazonaws.com/libertas/faaa3ea2-1c58-4abf-a66a-f3598f394512/Dima6_BMW2.jpeg&quot;,&quot;ImageType&quot;:&quot;Thumbnail&quot;,&quot;ImageWidth&quot;:284,&quot;ImageHeight&quot;:177}],&quot;SEOURL&quot;:&quot;http://dit.redboxinstant.net/movies/infra-man&quot;,&quot;CriticID&quot;:null,&quot;DeliveryTypes&quot;:[{&quot;mediaFormats&quot;:[{&quot;IsComingSoon&quot;:&quot;FALSE&quot;,&quot;IsNewRelease&quot;:&quot;FALSE&quot;,&quot;IsLeaving&quot;:&quot;FALSE&quot;,&quot;ReleaseDate&quot;:&quot;1975-01-01T00:00:00-06:00&quot;,&quot;FormatType&quot;:&quot;SD&quot;}],&quot;Ranking&quot;:&quot;99999&quot;,&quot;TypeValue&quot;:&quot;Subscription&quot;}],&quot;SubtitleList&quot;:[],&quot;PreviewList&quot;:{},&quot;LongDescription&quot;:&quot;The world of Cars takes flight in Planes, Disney&apos;s high-flying animated comedy revved up with action and adventure. Join Dusty, a crop duster with sky-high dreams and a once-in-a-lifetime chance to take on the world&apos;s fastest flyers in the greatest air race ever. Dusty has a huge heart but two big problems... he&apos;s not exactly built for speed, plus he&apos;s afraid of heights. His courage is put to the ultimate test as this unlikely hero aims higher than he ever imagined. With a little help from his friends, Dusty finds the courage to be more than he was built for and the inspiration to soar.&quot;,&quot;Actors&quot;:[&quot;Dane Cook&quot;,&quot;Stacy Keach&quot;,&quot;Brad Garret&quot;,&quot;Teri Hatcher&quot;,&quot;Julia Louis-Dreyfus&quot;],&quot;RatingReason&quot;:null,&quot;SortTitle&quot;:&quot;Planes&quot;,&quot;Videos&quot;:{},&quot;ProductType&quot;:&quot;Movie&quot;,&quot;Producers&quot;:[],&quot;RequiredAddonIDs&quot;:null,&quot;AverageUserRating&quot;:&quot;0&quot;,&quot;AltCode&quot;:&quot;XPPK0000000000132449&quot;,&quot;Title&quot;:&quot;Horns&quot;,&quot;Languages&quot;:[],&quot;ShortDescription&quot;:&quot;The world of Cars takes flight in Planes, Disney&apos;s high-flying animated comedy revved up with action and adventure. Join Dusty, a crop duster with sky-high dreams and a once-in-a-lifetime chance to take on the world&apos;s fastest flyers in the greatest air race ever. Dusty has a huge heart but two big problems... he&apos;s not exactly built for speed, plus he&apos;s afraid of heights. His courage is put to the ultimate test as this unlikely hero aims higher than he ever imagined. With a little help from his friends, Dusty finds the courage to be more than he was built for and the inspiration to soar.&quot;,&quot;BoxOfficeGross&quot;:&quot;-99999999&quot;,&quot;BlackoutIndicator&quot;:&quot;False&quot;,&quot;Directors&quot;:[],&quot;Network&quot;:null,&quot;Rating&quot;:&quot;PG&quot;,&quot;BlackoutWindowStart&quot;:null,&quot;RequiredPackageID&quot;:&quot;000001&quot;,&quot;RunningTime&quot;:&quot;01:20:00&quot;,&quot;Genres&quot;:[&quot;Animation&quot;],&quot;BlackoutWindowEnd&quot;:null,&quot;ClosedCaption&quot;:&quot;False&quot;}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${productPort}</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">${path}/v1/admin/product/Bind${__Random(100000,60000003, &apos;LOTTERY&apos;)}?apiKey=${tenantId}</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CreateProduct" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;ShortTitle&quot;:&quot;Ouija&quot;,&quot;PurchaseOptionList&quot;:[{&quot;PurchaseOptionType&quot;:&quot;Subscription&quot;,&quot;MediaList&quot;:[],&quot;Price&quot;:&quot;7.00&quot;,&quot;PurchaseOptionID&quot;:&quot;XPPK0000000000132449-000001&quot;,&quot;PurchaseOptionName&quot;:&quot;Subscription&quot;}],&quot;Studio&quot;:null,&quot;ReleaseYear&quot;:&quot;1990&quot;,&quot;ProductID&quot;:&quot;e81721a7-0990-469d-afba-3e67df118fea&quot;,&quot;ImageList&quot;:[{&quot;ImageURL&quot;:&quot;https://s3.amazonaws.com/libertas/faaa3ea2-1c58-4abf-a66a-f3598f394512/Dima6_BMW2.jpeg&quot;,&quot;ImageType&quot;:&quot;Thumbnail&quot;,&quot;ImageWidth&quot;:284,&quot;ImageHeight&quot;:177}],&quot;SEOURL&quot;:&quot;http://dit.redboxinstant.net/movies/infra-man&quot;,&quot;CriticID&quot;:null,&quot;DeliveryTypes&quot;:[{&quot;mediaFormats&quot;:[{&quot;IsComingSoon&quot;:&quot;FALSE&quot;,&quot;IsNewRelease&quot;:&quot;FALSE&quot;,&quot;IsLeaving&quot;:&quot;FALSE&quot;,&quot;ReleaseDate&quot;:&quot;1975-01-01T00:00:00-06:00&quot;,&quot;FormatType&quot;:&quot;SD&quot;}],&quot;Ranking&quot;:&quot;99999&quot;,&quot;TypeValue&quot;:&quot;Subscription&quot;}],&quot;SubtitleList&quot;:[],&quot;PreviewList&quot;:{},&quot;LongDescription&quot;:&quot;The world of Cars takes flight in Planes, Disney&apos;s high-flying animated comedy revved up with action and adventure. Join Dusty, a crop duster with sky-high dreams and a once-in-a-lifetime chance to take on the world&apos;s fastest flyers in the greatest air race ever. Dusty has a huge heart but two big problems... he&apos;s not exactly built for speed, plus he&apos;s afraid of heights. His courage is put to the ultimate test as this unlikely hero aims higher than he ever imagined. With a little help from his friends, Dusty finds the courage to be more than he was built for and the inspiration to soar.&quot;,&quot;Actors&quot;:[&quot;Dane Cook&quot;,&quot;Stacy Keach&quot;,&quot;Brad Garret&quot;,&quot;Teri Hatcher&quot;,&quot;Julia Louis-Dreyfus&quot;],&quot;RatingReason&quot;:null,&quot;SortTitle&quot;:&quot;Planes&quot;,&quot;Videos&quot;:{},&quot;ProductType&quot;:&quot;Movie&quot;,&quot;Producers&quot;:[],&quot;RequiredAddonIDs&quot;:null,&quot;AverageUserRating&quot;:&quot;0&quot;,&quot;AltCode&quot;:&quot;XPPK0000000000132449&quot;,&quot;Title&quot;:&quot;Ouija&quot;,&quot;Languages&quot;:[],&quot;ShortDescription&quot;:&quot;The world of Cars takes flight in Planes, Disney&apos;s high-flying animated comedy revved up with action and adventure. Join Dusty, a crop duster with sky-high dreams and a once-in-a-lifetime chance to take on the world&apos;s fastest flyers in the greatest air race ever. Dusty has a huge heart but two big problems... he&apos;s not exactly built for speed, plus he&apos;s afraid of heights. His courage is put to the ultimate test as this unlikely hero aims higher than he ever imagined. With a little help from his friends, Dusty finds the courage to be more than he was built for and the inspiration to soar.&quot;,&quot;BoxOfficeGross&quot;:&quot;-99999999&quot;,&quot;BlackoutIndicator&quot;:&quot;False&quot;,&quot;Directors&quot;:[],&quot;Network&quot;:null,&quot;Rating&quot;:&quot;PG&quot;,&quot;BlackoutWindowStart&quot;:null,&quot;RequiredPackageID&quot;:&quot;000001&quot;,&quot;RunningTime&quot;:&quot;01:20:00&quot;,&quot;Genres&quot;:[&quot;Animation&quot;],&quot;BlackoutWindowEnd&quot;:null,&quot;ClosedCaption&quot;:&quot;False&quot;}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${productPort}</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">${path}/v1/admin/product/Bind${__Random(100000,60000003, &apos;LOTTERY&apos;)}?apiKey=${tenantId}</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="CreateProduct" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&quot;ShortTitle&quot;:&quot;Gone Girl&quot;,&quot;PurchaseOptionList&quot;:[{&quot;PurchaseOptionType&quot;:&quot;Subscription&quot;,&quot;MediaList&quot;:[],&quot;Price&quot;:&quot;7.00&quot;,&quot;PurchaseOptionID&quot;:&quot;XPPK0000000000132449-000001&quot;,&quot;PurchaseOptionName&quot;:&quot;Subscription&quot;}],&quot;Studio&quot;:null,&quot;ReleaseYear&quot;:&quot;1990&quot;,&quot;ProductID&quot;:&quot;e81721a7-0990-469d-afba-3e67df118fea&quot;,&quot;ImageList&quot;:[{&quot;ImageURL&quot;:&quot;https://s3.amazonaws.com/libertas/faaa3ea2-1c58-4abf-a66a-f3598f394512/Dima6_BMW2.jpeg&quot;,&quot;ImageType&quot;:&quot;Thumbnail&quot;,&quot;ImageWidth&quot;:284,&quot;ImageHeight&quot;:177}],&quot;SEOURL&quot;:&quot;http://dit.redboxinstant.net/movies/infra-man&quot;,&quot;CriticID&quot;:null,&quot;DeliveryTypes&quot;:[{&quot;mediaFormats&quot;:[{&quot;IsComingSoon&quot;:&quot;FALSE&quot;,&quot;IsNewRelease&quot;:&quot;FALSE&quot;,&quot;IsLeaving&quot;:&quot;FALSE&quot;,&quot;ReleaseDate&quot;:&quot;1975-01-01T00:00:00-06:00&quot;,&quot;FormatType&quot;:&quot;SD&quot;}],&quot;Ranking&quot;:&quot;99999&quot;,&quot;TypeValue&quot;:&quot;Subscription&quot;}],&quot;SubtitleList&quot;:[],&quot;PreviewList&quot;:{},&quot;LongDescription&quot;:&quot;The world of Cars takes flight in Planes, Disney&apos;s high-flying animated comedy revved up with action and adventure. Join Dusty, a crop duster with sky-high dreams and a once-in-a-lifetime chance to take on the world&apos;s fastest flyers in the greatest air race ever. Dusty has a huge heart but two big problems... he&apos;s not exactly built for speed, plus he&apos;s afraid of heights. His courage is put to the ultimate test as this unlikely hero aims higher than he ever imagined. With a little help from his friends, Dusty finds the courage to be more than he was built for and the inspiration to soar.&quot;,&quot;Actors&quot;:[&quot;Dane Cook&quot;,&quot;Stacy Keach&quot;,&quot;Brad Garret&quot;,&quot;Teri Hatcher&quot;,&quot;Julia Louis-Dreyfus&quot;],&quot;RatingReason&quot;:null,&quot;SortTitle&quot;:&quot;Planes&quot;,&quot;Videos&quot;:{},&quot;ProductType&quot;:&quot;Movie&quot;,&quot;Producers&quot;:[],&quot;RequiredAddonIDs&quot;:null,&quot;AverageUserRating&quot;:&quot;0&quot;,&quot;AltCode&quot;:&quot;XPPK0000000000132449&quot;,&quot;Title&quot;:&quot;Gone Girl&quot;,&quot;Languages&quot;:[],&quot;ShortDescription&quot;:&quot;The world of Cars takes flight in Planes, Disney&apos;s high-flying animated comedy revved up with action and adventure. Join Dusty, a crop duster with sky-high dreams and a once-in-a-lifetime chance to take on the world&apos;s fastest flyers in the greatest air race ever. Dusty has a huge heart but two big problems... he&apos;s not exactly built for speed, plus he&apos;s afraid of heights. His courage is put to the ultimate test as this unlikely hero aims higher than he ever imagined. With a little help from his friends, Dusty finds the courage to be more than he was built for and the inspiration to soar.&quot;,&quot;BoxOfficeGross&quot;:&quot;-99999999&quot;,&quot;BlackoutIndicator&quot;:&quot;False&quot;,&quot;Directors&quot;:[],&quot;Network&quot;:null,&quot;Rating&quot;:&quot;PG&quot;,&quot;BlackoutWindowStart&quot;:null,&quot;RequiredPackageID&quot;:&quot;000001&quot;,&quot;RunningTime&quot;:&quot;01:20:00&quot;,&quot;Genres&quot;:[&quot;Animation&quot;],&quot;BlackoutWindowEnd&quot;:null,&quot;ClosedCaption&quot;:&quot;False&quot;}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${productPort}</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">${path}/v1/admin/product/Bind${__Random(100000,60000003, &apos;LOTTERY&apos;)}?apiKey=${tenantId}</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="AddRottenTomatoesID" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">[&quot;dfersfs&quot;]</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${rottenTomatoesPort}</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">${path}/v1/admin/enrich/tenant/${tenantId}?fromField=rajuhgtings&amp;toField=rotten-tomatoes-ratings</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+            </value>
+          </objProp>
+          <objProp>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="false">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1391124843000</longProp>
+        <longProp name="ThreadGroup.end_time">1391124843000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="host" elementType="Argument">
+              <stringProp name="Argument.name">host</stringProp>
+              <stringProp name="Argument.value">localhost</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="port" elementType="Argument">
+              <stringProp name="Argument.name">port</stringProp>
+              <stringProp name="Argument.value">9019</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="email" elementType="Argument">
+              <stringProp name="Argument.name">email</stringProp>
+              <stringProp name="Argument.value">${__Random(100000,60000003, &apos;LOTTERY&apos;)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="tenantId" elementType="Argument">
+              <stringProp name="Argument.name">tenantId</stringProp>
+              <stringProp name="Argument.value">${__Random(100000,60000003, &apos;LOTTERY&apos;)}</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+          <stringProp name="ConstantTimer.delay">200</stringProp>
+        </ConstantTimer>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get  Genres" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value"></stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/v1/genre/findAll?apiKey=${tenantId}&amp;pageSize=20&amp;pageNumber=0</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get  Genres" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value"></stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${host}</stringProp>
+          <stringProp name="HTTPSampler.port">${port}</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/v1/admin/genre/findAll?apiKey=${tenantId}&amp;pageSize=20&amp;pageNumber=0</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree/>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+            </value>
+          </objProp>
+          <objProp>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

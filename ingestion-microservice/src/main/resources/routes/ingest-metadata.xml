@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:lang="http://www.springframework.org/schema/lang"
+
+	xsi:schemaLocation="http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	   http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd">
+	
+	
+	 <import resource="file:**/ingest-primitives.xml" />
+
+     <camelContext   useMDCLogging="true"  id="metadataIngestContext"   xmlns="http://camel.apache.org/schema/spring">
+			<propertyPlaceholder id="properties" location="ref:metadataConfig"/>
+     		<routeContextRef ref="ingest-primitives"/>
+     		<dataFormats>
+				<json id="json" library="Jackson"/>
+			</dataFormats>
+			
+     		<route id="ingest-metadata-filesystem">
+     			<from uri="file://{{LibertasStandardFileSystemHotfolder}}?moveFailed=.failed&amp;consumer.delay=10000&amp;recursive=true&amp;include=.*(?i)(json)"/>
+     			<setHeader headerName="CamelRemoteAbsolutePath"><simple>${headers.CamelFileAbsolutePath}</simple></setHeader>
+     			<to uri="direct:ingest-metadata-route"/>
+		   	</route>
+		 	  
+			 <route id="vm-create-product">
+				<from uri="direct-vm:create-product-route"/>
+		  		<log message="vm-create-product received production request:${body}" loggingLevel="INFO"/>
+				<to uri="direct:create-product-route"/> 
+			</route>
+			<route id="vm-update-complete-product-metadata-route">
+				<from uri="vm:update-complete-product-metadata-route"/>
+				<to uri="direct:update-complete-product-metadata-route"/>
+			</route>
+      </camelContext>
+</beans>

@@ -1,0 +1,10 @@
+server:
+    port: 7002
+
+eureka:
+    instance:
+         virtualHostName: turbine-server
+         appGroupName: LibertasViPaaS
+         client:
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka-server.credentials.uri:http://127.0.0.1:7001}/eureka/

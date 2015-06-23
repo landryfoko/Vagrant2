@@ -1,0 +1,15 @@
+server:
+  port: ${PORT:7001}
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+    instance:
+        statusPageUrlPath: /admin/info
+        healthCheckUrlPath: /admin/health
+        waitTimeInMsWhenSyncEmpty: 0
+        virtualHostName: eureka
+        appGroupName: LibertasViPaaS

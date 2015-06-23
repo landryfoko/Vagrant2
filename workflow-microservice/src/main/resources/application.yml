@@ -1,0 +1,11 @@
+server:
+   port: 9017
+
+eureka:
+  instance:
+    virtualHostName: workflow
+    GroupName: LibertasViPaaS
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka-server.credentials.uri:http://127.0.0.1:7001}/eureka/
+    

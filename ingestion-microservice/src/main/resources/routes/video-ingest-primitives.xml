@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:lang="http://www.springframework.org/schema/lang"
+
+	xsi:schemaLocation="http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	   http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd">
+
+     <routeContext id="ingest-video-primitives"   xmlns="http://camel.apache.org/schema/spring">
+
+ 
+	<route id="ingest-uplynk-video-route">
+     			<from uri="direct:ingest-uplynk-video-route"/>
+     			<to uri="direct:extract-api-key"/>
+     		 	<!-- <to uri="direct-vm:store-api-key-to-inprogressdb"/> -->
+     			<to uri="direct:extract-bind-id-by-file-name"/>
+				<to uri="direct:extract-or-create-product-id"/>
+				<to uri="direct:populate-media-metadata"/>
+				
+				<setHeader headerName="LibertasAssetUUID"><groovy>UUID.randomUUID().toString()</groovy></setHeader>
+				<setHeader headerName="fileExtension"><groovy>request.headers.CamelFileNameOnly.substring(request.headers.CamelFileNameOnly.lastIndexOf('.'))</groovy></setHeader>
+				<log message="File extension found ${headers.fileExtension} found for file ${headers.CamelFileNameOnly}"/>
+				<setHeader headerName="fileNameNoExtension"><groovy>request.headers.CamelFileNameOnly.substring(0,request.headers.CamelFileNameOnly.lastIndexOf('.'))</groovy></setHeader>
+				<log message="File name without extension found ${headers.fileNameNoExtension} found for file ${headers.CamelFileNameOnly}"/>
+				<setHeader headerName="slicerBotFileName"><groovy>'file://{{LibertasSlicerbotFileSystemHotfolder}}?fileName='+request.headers.fileNameNoExtension+'^external_id='+request.headers.LibertasAssetUUID+request.headers.fileExtension</groovy></setHeader>
+				<recipientList><groovy>request.headers.slicerBotFileName</groovy></recipientList> 
+				<log message="File ${headers.CamelFileAbsolutePath} moved to Slicebot folder ${headers.slicerBotFileName}"/>
+				<setHeader headerName="CamelStreamingOriginLocation"><groovy>'{{LibertasUplynkHLSBaseUrl}}'.replace('{externalId}',request.headers.LibertasAssetUUID)</groovy></setHeader>
+				<log message="Originaion URL computed: ${headers.CamelStreamingOriginLocation}"/>
+     			<transform>
+     				<groovy>	     				
+     					h=request.headers
+     					d=h.DevicePresetMap
+     					org.json.simple.JSONObject j= new org.json.simple.JSONObject()
+     					j.putAll([add:[doc:[apiKey:[set:h.apiKey],bindId:[set:h.LibertasBindID],id:h.LibertasProductID,(request.headers.LibertasVideoType):[add:org.json.simple.JSONObject.toJSONString([aspectRatio:'Uplynk',mediaFormat:'Uplynk',targetDevice:'Uplynk',screenFormat:'Uplynk',componentId:h.LibertasAssetUUID,url:h.CamelStreamingOriginLocation])]]]])
+     					j.toJSONString().replace("\\\\/", "/")
+     				</groovy>
+     			</transform>
+				<to uri="headers:backup"/>
+				
+     			<setHeader headerName="Exchange.CONTENT_TYPE">
+     				<constant>application/json</constant>
+     			</setHeader>
+     			<setHeader headerName="Exchange.HTTP_METHOD">
+     				<constant>POST</constant>
+     			</setHeader>
+				<log message="Posting video ${body}"/>
+     			<to uri="{{LibertasSOLRUpdateURL}}?commit=true"/>
+				<to uri="headers:restore"/>
+				<log message="Starting updating blob"/>
+     			<to uri="direct:update-solr-blob" />
+     </route>     
+ 
+ 	<route id="ingest-edgecast-video-route">
+     			<from uri="direct:ingest-edgecast-video-route"/>
+     			<to uri="direct:extract-api-key"/>
+     		 	<!-- <to uri="direct-vm:store-api-key-to-inprogressdb"/> -->
+     			<to uri="direct:extract-bind-id-by-file-name"/>
+				<to uri="direct:extract-or-create-product-id"/>
+				<to uri="direct:populate-media-metadata"/>
+				
+				<setHeader headerName="CamelRemoteAbsolutePath"><simple>${headers.CamelFileAbsolutePath}</simple></setHeader>
+				<setHeader headerName="CamelAwsS3ContentLength"><groovy>new java.io.File(request.headers.CamelFileAbsolutePath).length()</groovy></setHeader>
+				<setHeader headerName="CamelAwsS3Key"><groovy>(new java.io.File(request.headers.CamelFileAbsolutePath).getParentFile().getName())+"/"+request.headers.CamelFileNameOnly</groovy></setHeader>
+				<setHeader headerName="CamelAwsS3CannedAcl"><constant>PublicRead</constant></setHeader>
+				<recipientList><simple>aws-s3://{{LibertasS3EdgecastBucketName}}?amazonS3Client=#s3</simple></recipientList> 
+				<log message="File ${headers.CamelFileAbsolutePath} moved to S3"/>
+				<setHeader headerName="CamelAzureStreamingOriginLocation"><groovy>((request.headers.LibertasVideoTargetFormat.equals('mp4')?'{{LibertasS3EdgecastMP4BaseUrl}}':'{{LibertasS3EdgecastHLSBaseUrl}}')+'{{LibertasS3EdgecastBucketName}}/'+request.headers.CamelAwsS3Key)+(request.headers.LibertasVideoTargetFormat.equals('hls')?'.m3u8':'')</groovy></setHeader>
+				<setHeader headerName="LibertasAssetUUID"><groovy>UUID.randomUUID().toString()</groovy></setHeader>
+				<log message="Originaion URL computed: ${headers.CamelAzureStreamingOriginLocation}"/>
+     			<transform>
+     				<groovy>	     				
+     					h=request.headers
+     					d=h.DevicePresetMap
+     					org.json.simple.JSONObject j= new org.json.simple.JSONObject()
+     					j.putAll([add:[doc:[apiKey:[set:h.apiKey],bindId:[set:h.LibertasBindID],id:h.LibertasProductID,(request.headers.LibertasVideoType):[add:org.json.simple.JSONObject.toJSONString([aspectRatio:'EdgeCast',mediaFormat:'EdgeCast',targetDevice:'EdgeCast',screenFormat:'EdgeCast',componentId:h.LibertasAssetUUID,url:h.CamelAzureStreamingOriginLocation])]]]])
+     					j.toJSONString().replace("\\\\/", "/")
+     				</groovy>
+     			</transform>
+				<to uri="headers:backup"/>
+				
+     			<setHeader headerName="Exchange.CONTENT_TYPE">
+     				<constant>application/json</constant>
+     			</setHeader>
+     			<setHeader headerName="Exchange.HTTP_METHOD">
+     				<constant>POST</constant>
+     			</setHeader>
+				<log message="Posting video ${body}"/>
+     			<to uri="{{LibertasSOLRUpdateURL}}?commit=true"/>
+				<to uri="headers:restore"/>
+				<log message="Starting updating blob"/>
+     			<to uri="direct:update-solr-blob" />
+     		</route>     
+ 
+     
+     		<route id="ingest-video-route">
+     			<from uri="direct:ingest-video-route"/>
+     			<to uri="direct:extract-api-key"/>
+     		 	<!-- <to uri="direct-vm:store-api-key-to-inprogressdb"/> -->
+     			<to uri="direct:extract-bind-id-by-file-name"/>
+				<to uri="direct:extract-or-create-product-id"/>
+				<to uri="direct:populate-media-metadata"/>
+     			<to uri="direct:azure-upload"/>     			
+     			<split parallelProcessing="true">
+     				<groovy>'{{LibertasAzureEncodePreset}}'.split(',')</groovy>
+					<setHeader headerName="CamelAzureEncodePresetName">
+						<simple>${body}</simple>
+					</setHeader>
+     				<to uri="direct:azure-encode-package-encrypt"/>
+ <!--     				<to uri="direct:download-azure-result"/>
+     				<setHeader headerName="LibertasAssetURL"><groovy>"{{LibertasCDNBaseURL}}/{{LibertasS3ImageBucketName}}/"+request.headers.LibertasAssetUUID+"/"+request.headers.CamelAzureStreamingOriginLocation.substring(request.headers.CamelAzureStreamingOriginLocation.lastIndexOf('/',request.headers.CamelAzureStreamingOriginLocation.indexOf('/manifest')-1)+1)</groovy></setHeader>
+ -->				<log message="Preset map:${headers.DevicePresetMap}"/>
+					<log message="Preset name for violin:${headers.CamelAzureEncodePresetName}"/>
+					<choice>
+						<when>
+							<groovy>request.headers.CamelAzureStreamingOriginLocation!=null &amp;&amp; !request.headers.CamelAzureStreamingOriginLocation.trim().equals('')</groovy>
+							<setHeader headerName="CamelAzureStreamingOriginLocation"><simple>${headers.CamelAzureStreamingOriginLocation}{{CamelAzureURLSuffix}}</simple></setHeader>
+							<setHeader headerName="LibertasAssetUUID"><groovy>UUID.randomUUID().toString()</groovy></setHeader>
+			     			<transform>
+			     				<groovy>	     				
+			     					h=request.headers
+			     					d=h.DevicePresetMap
+			     					org.json.simple.JSONObject.toJSONString([add:[doc:[apiKey:[set:h.apiKey],bindId:[set:h.LibertasBindID],id:h.LibertasProductID,(request.headers.LibertasVideoType):[add:org.json.simple.JSONObject.toJSONString([aspectRatio:d[h.CamelAzureEncodePresetName][0],mediaFormat:d[h.CamelAzureEncodePresetName][1],targetDevice:d[h.CamelAzureEncodePresetName][2],screenFormat:d[h.CamelAzureEncodePresetName][3],componentId:h.LibertasAssetUUID,url:h.CamelAzureStreamingOriginLocation])]]]])
+			     				</groovy>
+			     			</transform>
+							<to uri="headers:backup"/>
+							
+			     			<setHeader headerName="Exchange.CONTENT_TYPE">
+			     				<constant>application/json</constant>
+			     			</setHeader>
+			     			<setHeader headerName="Exchange.HTTP_METHOD">
+			     				<constant>POST</constant>
+			     			</setHeader>
+							<log message="Posting video ${body}"/>
+			     			<to uri="{{LibertasSOLRUpdateURL}}?commit=true"/>
+							<to uri="headers:restore"/>
+							<log message="Starting updating blob"/>
+			     			<to uri="direct:update-solr-blob" />
+			    		 	<!-- <to uri="direct-vm:store-api-key-to-idempotentdb"/> -->
+						</when>
+						<otherwise>
+							<log loggingLevel="ERROR" message="No origination URL found. Encoding/packaging/encryption failed for asset: ${headers.CamelRemoteAbsolutePath} and encode preset:${headers.CamelAzureEncodePresetName}"/>
+						</otherwise>
+					</choice>
+     			</split>			
+     		</route>
+
+    		<route>
+					<from uri="direct:azure-upload"/>
+					<log message="Starting Azure encoding process"></log>
+					<setHeader headerName="CamelAzureLocalFileAbsolutePath">
+						<simple>${headers.CamelFileAbsolutePath}</simple>
+					</setHeader>
+					<setHeader headerName="CamelAzureUploadPolicyName">
+						<groovy>request.headers.CamelFileName+"-"+new Date().format('yyyy-MM-dd')</groovy>
+					</setHeader>
+					<setHeader headerName="CamelAzureUploadedAssetName">
+						<groovy>request.headers.CamelFileName</groovy>
+					</setHeader>
+					<setHeader headerName="CamelAzureOperation">
+						<constant>Upload</constant>
+					</setHeader>
+					<log message="Uploading file to Azure MediaService:${headers.CamelAzureLocalFileAbsolutePath}"></log>
+					<to uri="azure-ms://{{mediaServiceUri}}?clientId={{clientId}}&amp;clientSecret={{clientSecret}}&amp;OAuthURI={{OAuthUri}}&amp;scope={{scope}}"/>
+					<log message="File uploading resulted into asset with ID::${headers.CamelAzureResponseAssetID}"></log>
+		</route>
+		<route>	
+				<from uri="direct:azure-encode-package-encrypt"/>
+					<log message="Starting  encoding file:${headers.CamelAzureLocalFileAbsolutePath}"></log>
+					<setHeader headerName="CamelAzureRequestAssetID">
+						<simple>${headers.CamelAzureResponseAssetID}</simple>
+					</setHeader>
+					<setHeader headerName="CamelAzureJobName">
+						<groovy>request.headers.CamelFileName+"-"+new Date().format('yyyy-MM-dd')</groovy>
+					</setHeader>
+					<setHeader headerName="CamelAzureEncryptorConfigPath">
+						<simple>{{CamelAzureEncryptorConfigPath}}</simple>
+					</setHeader>
+					<setHeader headerName="CamelAzurePackagerConfigPath">
+						<simple>{{CamelAzurePackagerConfigPath}}</simple>
+					</setHeader>
+					<setHeader headerName="CamelAzureOperation">
+						<constant>{{LibertasAzurePreviewOperation}}</constant>
+					</setHeader>
+					<log message="Value of  CamelAzurePackagerConfigPath ${headers.CamelAzurePackagerConfigPath}"></log>
+					<to uri="azure-ms://{{mediaServiceUri}}?clientId={{clientId}}&amp;clientSecret={{clientSecret}}&amp;OAuthURI={{OAuthUri}}&amp;scope={{scope}}"/>
+			</route>
+			<route>
+					<from uri="direct:download-azure-result"/>
+					<setHeader headerName="LibertasAssetUUID"><groovy>UUID.randomUUID().toString()</groovy></setHeader>
+					<setHeader headerName="CamelAzureLocalDownloadDirectory">
+						<groovy>'{{LibertasS3LocalTempDirectory}}/'+request.headers.LibertasAssetUUID</groovy>
+					</setHeader>
+					<setHeader headerName="CamelAzureRequestAssetID">
+						<simple>${headers.CamelAzureResponseAssetID}</simple>
+					</setHeader>
+					<setHeader headerName="CamelAzureOperation">
+						<constant>DOWNLOAD</constant>
+					</setHeader>
+					<setHeader headerName="CamelAzureRequestAssetID">
+						<groovy>request.headers.CamelAzureResponseAssetID.split(',')[request.headers.CamelAzureResponseAssetID.split(',').length-1]</groovy>
+					</setHeader>
+					<log message="Value of  CamelAzureResponseAssetID ${headers.CamelAzureResponseAssetID}"></log>
+					<to uri="azure-ms://{{mediaServiceUri}}?clientId={{clientId}}&amp;clientSecret={{clientSecret}}&amp;OAuthURI={{OAuthUri}}&amp;scope={{scope}}"/>					
+			</route>
+			<route id="populate-media-metadata">
+				<from uri="direct:populate-media-metadata"/>
+				<setHeader headerName="DevicePresetMap">
+					<groovy>
+						org.json.simple.JSONValue.parse('{{devicePresetMapping}}')
+					</groovy>
+				</setHeader>
+			</route>		
+			     </routeContext>
+</beans>

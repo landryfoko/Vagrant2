@@ -1,0 +1,7 @@
+spring:
+    application:
+        name: workflow
+
+    cloud:
+        config:
+            uri: http://localhost:${config.port:7000}

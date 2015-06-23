@@ -1,0 +1,157 @@
+server:
+    port: 7004
+
+eureka:
+  instance:
+    virtualHostName: zuulserver
+    appGroupName: LibertasViPaaS
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka-server.credentials.uri:http://127.0.0.1:7001}/eureka/
+
+zuul:
+      routes:
+           bookmark: 
+               path: /v1/bookmark/**
+               stripPrefix: false
+           creditcard: 
+               path: /v1/creditcard/**
+               stripPrefix: false
+           customer: 
+               path: /v1/customer/**
+               stripPrefix: false
+           device: 
+               path: /v1/device/**
+               stripPrefix: false
+           entitlement: 
+               path: /v1/entitlement/**
+               stripPrefix: false
+           genre: 
+               path: /v1/genre/**
+               stripPrefix: false
+           hls: 
+               path: /v1/hls/**
+               stripPrefix: false
+           offer: 
+               path: /v1/offer/**
+               stripPrefix: false
+           playback: 
+               path: /v1/playback/**
+               stripPrefix: false
+           product: 
+               path: /v1/product/**
+               stripPrefix: false
+           promotion: 
+               path: /v1/promotion/**
+               stripPrefix: false
+           purchase: 
+               path: /v1/purchase/**
+               stripPrefix: false
+           rating: 
+               path: /v1/rating/**
+               stripPrefix: false
+           review: 
+               path: /v1/review/**
+               stripPrefix: false
+           recommendation:
+               path: /v1/recommendation/**
+               stripPrefix: false
+           subscription: 
+               path: /v1/subscription/**
+               stripPrefix: false
+           subscriptionpackage: 
+               path: /v1/subscriptionpackage/**
+               stripPrefix: false
+           tenant: 
+               path: /v1/tenant/**
+               stripPrefix: false
+           workflow: 
+               path: /v1/workflow/**
+               stripPrefix: false           
+           watchhistory: 
+               path: /v1/watchhistory/**
+               stripPrefix: false           
+           tenant_admin:
+               path: /v1/admin/tenant/**
+               stripPrefix: false
+               serviceId: tenant
+           workflow_admin:
+               path: /v1/admin/workflow/**
+               stripPrefix: false
+               serviceId: workflow
+           bookmark_admin:
+               path: /v1/admin/bookmark/**
+               stripPrefix: false
+               serviceId: bookmark
+           creditcard_admin:
+               path: /v1/admin/creditcard/**
+               stripPrefix: false
+               serviceId: creditcard
+           customer_admin:
+               path: /v1/admin/customer/**
+               stripPrefix: false
+               serviceId: customer
+           device_admin:
+               path: /v1/admin/device/**
+               stripPrefix: false
+               serviceId: device
+           entitlement_admin:
+               path: /v1/admin/entitlement/**
+               stripPrefix: false
+               serviceId: entitlement
+           genre_admin:
+               path: /v1/admin/genre/**
+               stripPrefix: false
+               serviceId: genre
+           hls_admin:
+               path: /v1/admin/hls/**
+               stripPrefix: false
+               serviceId: hls
+           offer_admin:
+               path: /v1/admin/offer/**
+               stripPrefix: false
+               serviceId: offer
+           playback_admin:
+               path: /v1/admin/playback/**
+               stripPrefix: false
+               serviceId: playback
+           product_admin:
+               path: /v1/admin/product/**
+               stripPrefix: false
+               serviceId: product
+           promotion_admin:
+               path: /v1/admin/promotion/**
+               stripPrefix: false
+               serviceId: promotion
+           purchase_admin:
+               path: /v1/admin/purchase/**
+               stripPrefix: false
+               serviceId: purchase
+           rating_admin:
+               path: /v1/admin/rating/**
+               stripPrefix: false
+               serviceId: rating
+           review_admin:
+               path: /v1/admin/review/**
+               stripPrefix: false
+               serviceId: review
+           recommendation_admin:
+               path: /v1/admin/recommendation/**
+               stripPrefix: false
+               serviceId: recommendation
+           subscription_admin:
+               path: /v1/admin/subscription/**
+               stripPrefix: false
+               serviceId: subscription
+           subscriptionpackage_admin:
+               path: /v1/admin/subscriptionpackage/**
+               stripPrefix: false
+               serviceId: subscriptionpackage 
+           watchhistory_admin: 
+               path: /v1/watchhistory/**
+               stripPrefix: false    
+               serviceId: watchhistory         
+
+logging:
+   level:
+      ROOT: INFO

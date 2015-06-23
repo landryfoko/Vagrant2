@@ -1,0 +1,13 @@
+server:
+   port: 5000
+general:
+   apiKeyValidationEnabled: false
+
+eureka:
+  instance:
+    virtualHostName: database
+    appGroupName: LibertasViPaaS
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka-server.credentials.uri:http://127.0.0.1:7001}/eureka/
+   

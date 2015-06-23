@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:lang="http://www.springframework.org/schema/lang"
+
+	xsi:schemaLocation="http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	   http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd">
+
+     <camelContext   useMDCLogging="true"  id="imageUploadContext"   xmlns="http://camel.apache.org/schema/spring">
+			<propertyPlaceholder id="properties" location="ref:metadataConfig"/>
+			
+ 		    	     
+     		<route id="upload-files-to-s3">   
+     			<from uri="file://{{LibertasS3LocalTempDirectory}}?consumer.delay=1000&amp;readLock=changed&amp;readLockTimeout=0&amp;readLockCheckInterval=10000&amp;recursive=true&amp;include=.*"/>
+     			<setHeader headerName="CamelRemoteAbsolutePath"><simple>${headers.CamelFileAbsolutePath}</simple></setHeader>
+				<setHeader headerName="CamelAwsS3ContentLength"><groovy>new java.io.File(request.headers.CamelFileAbsolutePath).length()</groovy></setHeader>
+				<setHeader headerName="CamelAwsS3Key"><groovy>(new java.io.File(request.headers.CamelFileAbsolutePath).getParentFile().getName())+"/"+request.headers.CamelFileNameOnly</groovy></setHeader>
+				<setHeader headerName="CamelAwsS3CannedAcl"><constant>PublicRead</constant></setHeader>
+				<recipientList><simple>aws-s3://{{LibertasS3ImageBucketName}}?amazonS3Client=#s3</simple></recipientList> 
+				<log message="File ${headers.CamelFileAbsolutePath} moved to S3"/>
+			</route>
+     </camelContext>
+</beans>

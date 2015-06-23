@@ -1,0 +1,261 @@
+eureka:
+    instance:
+        leaseRenewalIntervalInSeconds: 10
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:7001/v2/
+kafka:
+    producerConfig:
+        metadata.broker.list: localhost:9092
+        serializer.class: kafka.serializer.StringEncoder
+    consumerConfig:
+        zookeeper.connect: localhost:2181
+        zookeeper.session.timeout.ms: 1000
+        zookeeper.sync.time.ms: 1000
+        auto.commit.interval.ms: 1000
+
+zookeeper:
+   connectionString: localhost:2181
+   baseSleepTimeMs: 500
+   maxRetries: 10
+   
+hls:
+    hlsKey: key2
+    rottenUrl: http://api.rottentomatoes.com/api/public/v1.0/movies/{rottenTomatoesProductId}/similar.json?apikey={apiKey}
+
+hystrix:
+    dashboard:
+        serviceName: turbine-server
+        clusterName: LibertasViPaaS
+
+
+         
+bookmark:
+         databaseServiceName: http://database
+
+creditcard:
+    braintree:
+         environment: sandbox
+         merchantId: ddd44gynpmzcw45f
+         publicKey: b4vn98989c7xs7dn
+         privateKey: b197ffecb8077b6932fc3c69ef11f91a
+    databaseServiceName: http://database
+         
+
+customer:
+         databaseServiceName: http://database
+         resetPasswordTopic: resetPasswordTopic
+         updateCustomerTopic: updateCustomerTopic
+         createCustomerTopic: createCustomerTopic
+         deleteCustomerTopic: deleteCustomerTopic
+         changePasswordTopic: changePasswordTopic
+
+device:
+         databaseServiceName: http://database
+
+entitlement:
+         databaseServiceName: http://database
+         solrReadUrl: http://solrslave/solr/select
+
+genre:
+         databaseServiceName: http://database
+
+offer:
+         databaseServiceName: http://database
+         
+notification:
+        velocityTemplates:
+                createCustomerNotificationTemplate: Hi \$firstName,$newline Your account has been created. Thanks for choosing \$serviceName.$newline Your \$serviceName Team.
+                updateCustomerNotificationTemplate: Hi \$firstName,$newline Your account has been updated. Thanks for choosing \$serviceName.$newline Your \$serviceName Team.
+                deleteCustomerNotificationTemplate: Hi \$firstName,$newline Your account has been deleted. We are sorry to see you leave and hope to see you soon again.$newline Your \$serviceName Team.
+                changePasswordNotificationTemplate: Hi \$firstName,$newline Your password has been changed. Thanks for choosing \$serviceName.$newline Your \$serviceName Team.
+                resetPasswordNotificationTemplate: Hi \$firstName,$newline Your password has been reset to {newPassword}. Thanks for choosing \$serviceName.$newline Your \$serviceName Team.
+                purchaseNotificationTemplate: 
+                createTenantNotificationTemplate: Hi \$firstName,$newline Your tenant account has been created. Thanks for choosing \$serviceName.$newline Your \$serviceName Team.
+                updateTenantNotificationTemplate: Hi \$firstName,$newline Your tenant account has been updated. Thanks for choosing \$serviceName.$newline Your \$serviceName Team.
+                deleteTenantNotificationTemplate: Hi \$firstName,$newline Your tenant account has been deleted. We are sorry to see you leave and hope to see you soon again.$newline Your \$serviceName Team.
+                addAdministratorNotificationTemplate: Hi \$firstName,$newline User with email {adminEmail} has been added as administrator of your tenant, {tenantName}. Thanks for choosing \$serviceName.$newline Your Libertas Team.
+                removeAdministratorNotificationTemplate: Hi \$firstName,$newline User with email {adminEmail} has been removed as administrator of your tenant, {tenantName}. Thanks for choosing \$serviceName.$newline Your Libertas Team.
+                createCustomerNotificationSubject: \$serviceName Account Created
+                updateCustomerNotificationSubject: \$serviceName Account Updated
+                deleteCustomerNotificationSubject: \$serviceName Account Deleted
+                changePasswordNotificationSubject: \$serviceName Password Changed
+                resetPasswordNotificationSubject: \$serviceName Password Reset
+                purchaseNotificationSubject: \$serviceName Invoice
+                createTenantNotificationSubject: \$serviceName Tenant Created
+                updateTenantNotificationSubject: \$serviceName Tenant Configuration Updated
+                deleteTenantNotificationSubject: \$serviceName Tenant Deleted
+                addAdministratorNotificationSubject: \$serviceName Tenant Administrator Added
+                removeAdministratorNotificationSubject: \$serviceName Tenant Administrator Removed
+        databaseServiceName: http://database
+        smtpProperties:
+                mail.smtp.auth: true
+                mail.smtp.starttls.enable: true
+                mail.smtp.host: smtp.gmail.com
+                mail.smtp.port: 587
+                mail.from: pascal@fenkam.name
+                mail.username: pascal@fenkam.name
+                mail.password: solo77ville/.
+         
+playback:
+         databaseServiceName: http://database
+         playbackResponseTimoutMillis: 200
+         playbackResponseMinCount: 1
+         playbackLocationRequestTopic: playback-location-request2
+         playbackLocationResponseTopic: playback-location-response2
+         SolrReadUrl: http://solrslave/solr/select
+         playbackLocationFrequencyMillis: 10000
+         entitlementServiceUrlTemplate: http://entitlement/v1/entitlement/check/product/{productId}?customerId={customerId}&apiKey={tenantId}
+         deviceSpecMapping:
+             mobile.*: .*
+
+product:
+         solrReadUrl: http://solrslave/solr/select
+         solrWriteUrl: http://solr-master/solr/update
+         defaultSearcheableFields: title,id,directors,producers,genres,shorttitle,actors,producttype,releaseyear
+         defaultQueryTemplate: title:{}  OR directors:{} OR shorttitle:{} OR producers:{} 
+         databaseServiceName: http://database
+         tenantServiceName: http://tenant
+         offerServiceName: http://offer
+         createProductLockPath: /catalog/product/lock/create
+         createProductLockTimeoutMillis: 10000
+         progressWatchedQueryTemplate: http://playback/v1/playback/location/product/{productId}?customerId={customerId}&apiKey={tenantId}
+         canWatchNowQueryTemplate: http://entitlement/v1/entitlement/check/product/{productId}?customerId={customerId}&apiKey={tenantId}
+
+   
+
+promotion:
+         databaseServiceName: http://database
+         
+         
+         
+purchase:
+         solrReadUrl: http://solrslave/solr/select
+         databaseServiceName: http://database
+         tenantServiceName: http://tenant
+         offerServiceName: http://offer
+         entitlementServiceName: http://entitlement
+         purchaseTopic: purchaseTopic
+         braintree: 
+                environment: sandbox
+                merchantId: ddd44gynpmzcw45f
+                publicKey: b4vn98989c7xs7dn
+                privateKey: b197ffecb8077b6932fc3c69ef11f91a
+         
+rating:
+         databaseServiceName: http://database
+         avgUserRatingComputationFrequencyMilis: 600000
+         updateProductPath: /v1/product
+         productServiceName: product
+         avgUserRatingKafkaGroupId: rating.avg-user-rating.id
+         ratingCreationTopic: createRating
+         
+review:
+         databaseServiceName: http://database
+
+recommendation:
+        solrReadUrl: http://solrslave/solr/select
+        databaseServiceName: http://database
+         
+rotten-tomatoes:
+        applicationName: LibertasQP
+        applicationKey: nwwhgh8hhtfvu77u85s25nc8
+        databaseServiceName: http://database
+        solrReadUrl: http://solrslave/solr/select
+        searchQueryUrlTemplate: http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey={apiKey}&q={searchTerm}&page_limit=5
+        similarQueryUrlTemplate: http://api.rottentomatoes.com/api/public/v1.0/movies/{rottenTomatoesProductId}/similar.json?apikey={apiKey}
+        rottenTomatoesIdField: rottenTomatoesId
+        manualRecommendationFallbackEnabled: false
+        
+tenant:
+         databaseServiceName: http://database
+         createCustomerUrlTemplate: http://customer/v1/customer
+         createTenantTopic: createTenantTopic
+         updateTenantTopic: updateTenantTopic
+         addAdministratorTopic: addAdministratorTopic
+         removeAdministratorTopic: removeAdministratorTopic
+         deleteTenantTopic: deleteTenantTopic
+    
+watchhistory:
+         databaseServiceName: http://database
+
+ingestion:
+         name: miguel
+         workflow:
+              miguel: test
+              maria: test2         
+         
+workflow:
+         databaseServiceName: http://database
+
+zuul:
+   proxy:
+      route:
+         customer: /customer
+         tenant: /tenant
+         device: /device
+         watchhistory: /v1/watchhistory
+         recommendation: /recommendation
+         rotten-tomatoes: /rt-recommendation
+         hls: /hls
+   
+endpoints:
+  autoconfig:
+    id: autoconfig
+    sensitive: false
+    enabled: true
+  beans:
+    id: beans
+    sensitive: false
+    enabled: true
+  env:
+    id: env
+    sensitive: false
+    enabled: true
+  metrics:
+    id: metrics
+    sensitive: false
+    enabled: true
+  extendedmetrics:
+    id: extendedmetrics
+    sensitive: false
+    enabled: true
+  trace:
+    id: trace
+    sensitive: false
+    enabled: true
+  dump:
+    id: dump
+    sensitive: false
+    enabled: true
+  configprops:
+    id: configprops
+    sensitive: false
+    enabled: true
+    keys-to-sanitize: password,secret
+  health:
+    id: health
+    sensitive: false
+    enabled: true
+  info:
+    id: info
+    sensitive: false
+    enabled: true
+  jolokia:
+    sensitive: false
+    enabled: true
+  error:
+    path: /error
+  refresh:
+    id: refresh
+    sensitive: false
+    enabled: true  
+  
+oauth2:
+    client:
+        tokenUri: http://localhost:9998/s/oauth/token
+        authorizationUri: http://localhost:9998/s/oauth/authorize
+        clientId: libertas
+        clientSecret: libertas_secret
+    resource:
+        tokenInfoUri: http://localhost:9998/s/oauth/check_token

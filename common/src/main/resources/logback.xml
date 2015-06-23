@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="30 seconds">
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{ISO8601} %-5level %class  %replace(%m){"([Pp][Aa][Ss][Ss][Ww][Oo][Rr][Dd]&gt;.*&lt;)|(\&quot;[Pp][Aa][Ss][Ss][Ww][Oo][Rr][Dd].*?\&quot;&#58;\&quot;.*?\&quot;)", "Password&gt;*****&lt;"}%n</pattern>
+		</layout>
+	</appender>
+
+	<!--Daily rolling file appender -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>logs/libertas.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>logs/libertas.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+        	</timeBasedFileNamingAndTriggeringPolicy>			
+		</rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>%d{ISO8601} %-5level  [API=%X{API}]  [CustomerID=%X{libertas.customerId}] - %class:%L %replace(%m){"([Pp][Aa][Ss][Ss][Ww][Oo][Rr][Dd]&gt;.*&lt;)|(\&quot;[Pp][Aa][Ss][Ss][Ww][Oo][Rr][Dd].*?\&quot;&#58;\&quot;.*?\&quot;)", "Password&gt;*****&lt;"}%n</pattern> 
+				
+		</encoder>
+		
+	</appender>
+        
+        
+	 <appender name="ASYNC-FILE"  class="ch.qos.logback.classic.AsyncAppender">
+	    <appender-ref ref="FILE" />
+	    <queueSize>5000</queueSize>
+	    <includeCallerData>true</includeCallerData>
+		<discardingThreshold>20</discardingThreshold>
+	  </appender>
+	   <logger name="com.mangofactor" level="DEBUG" additivity="false">
+	            <appender-ref ref="STDOUT" />
+	    </logger>
+	<root>
+		<level value="INFO" />
+  		 <appender-ref ref="STDOUT" /> 
+		<!-- <appender-ref ref="ASYNC-SIMPLEDB" /> -->		
+		<appender-ref ref="ASYNC-FILE" />		
+	</root>
+	
+</configuration>

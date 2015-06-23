@@ -1,0 +1,12 @@
+server:
+   port: 9026
+   contextPath: /v1
+
+eureka:
+  instance:
+    virtualHostName: oauth2
+    appGroupName: LibertasViPaaS
+  client:
+    serviceUrl:
+      defaultZone: ${vcap.services.eureka-server.credentials.uri:http://127.0.0.1:7001}/eureka/
+   

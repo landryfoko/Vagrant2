@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+        xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+    
+	xsi:schemaLocation="http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+              http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+	<bean id="bridgePropertyPlaceholder"   class="org.apache.camel.spring.spi.BridgePropertyPlaceholderConfigurer">
+		 <property name="locations">
+		  <list>
+			   <value>classpath:config/libertas.properties</value>
+			   <value>classpath:config/libertas_pascal.properties</value>
+		  </list>
+		 </property>
+		 <property name="ignoreUnresolvablePlaceholders" value="true"/>
+	</bean>		
+
+    <util:map id="camelContextRegistry" map-class="java.util.HashMap">
+    </util:map>
+
+<!-- 	<camelContext id="gitContext" autoStartup="${git.mie.autostart}" xmlns="http://camel.apache.org/schema/spring">
+		<route>
+			<from uri="quartz2://git/timer?cron={{git.local.repo.quartz.expression}}&amp;deleteJob=true" />
+			<to uri="git://clone?branch={{git.mie.branch}}&amp;URI={{git.remote.repo.url}}&amp;directory={{git.local.repo.path}}&amp;password={{git.remote.repo.password}}&amp;username={{git.remote.repo.username}}" />
+			<to uri="git://store?section=remote&amp;directory={{git.local.repo.path}}&amp;subsection={{git.mie.branch}}&amp;value={{git.remote.repo.url}}&amp;name=url" />
+  			<to uri="git://checkout?name={{git.mie.branch}}&amp;directory={{git.local.repo.path}}&amp;force=true"/>
+  			<to uri="git://fetch?remote={{git.mie.branch}}&amp;refSpecs=refs/heads/{{git.mie.branch}}:refs/origin/{{git.mie.branch}}&amp;directory={{git.local.repo.path}}&amp;password={{git.remote.repo.password}}&amp;username={{git.remote.repo.username}}" />
+  			<to uri="git://reset?mode=HARD&amp;ref=origin/{{git.mie.branch}}&amp;directory={{git.local.repo.path}}" />	
+		</route>
+	</camelContext> -->
+<!--  	<bean id="dynamicModuleLoader" class="com.fenkam.videotion.engine.loader.DynamicModuleLoader" init-method="init" lazy-init="false">
+		<constructor-arg index="0" value="${dynamic-worklfow.mie.autostart}"/>
+		<property name="moduleRootFolder" value="${libertas.mie.modules.root}"/>
+		<property name="activeModulesPattern" value="${active.modules.pattern}"/>
+		<property name="contextLocationPattern" value="${context.location.pattern}"/>
+		<property name="watcher">
+			<bean class="com.fenkam.videotion.engine.watchers.AmazonSimpleDBChangeWatcher">
+				<property name="databaseCheckPeriodicityMillis" value="${database.check.priodicity.millis}"/>
+				<property name="moduleRootDitrectory" value="${libertas.mie.modules.root}"/>
+				<property name="amazonSimpleDBDomain" value="${simpledb.workflow.domain}"/>
+				<property name="amazonSimpleDBClient" ref="sdb"/>
+				<property name="propertyChangeListeners">
+					<list>
+						<ref bean="dynamicModuleLoader"/>
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>  -->
+	
+	<bean id="staticModuleLoader" class="com.fenkam.videotion.engine.loader.StaticModuleLoader" init-method="init" lazy-init="false">
+		<property name="moduleRootFolder" value="${libertas.mie.modules.root}"/>
+		<property name="contextLocationPattern" value="${context.location.pattern}"/>
+		<property name="activeModulesPattern" value="${active.modules.pattern}"/>
+		<property name="watcher">
+			<bean class="com.fenkam.videotion.engine.watchers.DirectoryChangeWatcher">
+				<property name="moduleRootDitrectory" value="${libertas.mie.modules.root}"/>
+				
+				<property name="propertyChangeListeners">
+					<list>
+						<ref bean="staticModuleLoader"/>
+						<!-- <ref bean="dynamicModuleLoader"/> -->
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean id="libertasRestletBinding" class="com.fenkam.videotion.misc.LibertasRestletBinding"/>
+	
+	
+	<bean id="credentials" class="com.amazonaws.auth.BasicAWSCredentials">
+		<constructor-arg index="0" value="${aws.accessKey}"/>
+		<constructor-arg index="1"  value="${aws.secretKey}"/>
+	</bean>
+
+	<bean id="awsConfig" class="com.amazonaws.ClientConfiguration">
+		<property name="maxConnections" value="${max.aws.connections}"/>
+	</bean>
+	
+	<bean id="sdb" class="com.amazonaws.services.simpledb.AmazonSimpleDBClient">
+		<constructor-arg index="0" ref="credentials"/>
+		<constructor-arg index="1" ref="awsConfig"/>
+	</bean>
+	
+	<bean id="s3" class="com.amazonaws.services.s3.AmazonS3Client">
+		<constructor-arg index="0" ref="credentials"/>
+		<constructor-arg index="1" ref="awsConfig"/>
+	</bean>
+	
+	
+	<bean id="sns" class="com.amazonaws.services.sns.AmazonSNSClient">
+		<constructor-arg index="0" ref="credentials"/>
+		<constructor-arg index="1" ref="awsConfig"/>
+	</bean>
+	
+	<bean id="strategy2" class="com.fenkam.videotion.misc.LibertasAggregationStrategy"/>
+	
+	
+	<bean id="poolTargetSource" class="org.springframework.aop.target.CommonsPoolTargetSource">
+	    <property name="targetBeanName" value="memcachedBeanTarget" />
+	    <property name="maxSize" value="${memcached.connection.poolsize}" />
+	</bean>
+	
+	<bean id="memcached" class="org.springframework.aop.framework.ProxyFactoryBean">
+	    <property name="targetSource" ref="poolTargetSource" />
+	</bean>
+	<bean id="memcachedBeanTarget" class="net.spy.memcached.spring.MemcachedClientFactoryBean" scope="prototype">
+	    <property name="servers" value="${memcached.hostnames}"/>
+	    <property name="protocol" value="BINARY"/>
+	    <property name="transcoder">
+	      <bean class="net.spy.memcached.transcoders.SerializingTranscoder">
+	        <property name="compressionThreshold" value="128"/>
+	      </bean>
+	    </property>
+	    <property name="opTimeout" value="100"/>
+	    <property name="timeoutExceptionThreshold" value="15"/>
+	    <property name="locatorType" value="CONSISTENT"/> 
+	    <property name="failureMode" value="Redistribute"/>
+	    <property name="useNagleAlgorithm" value="false"/>
+  	</bean>
+</beans>

@@ -1,0 +1,7 @@
+spring:
+    application:
+        name: oauth2
+
+    cloud:
+        config:
+            uri: http://localhost:${config.port:7000}

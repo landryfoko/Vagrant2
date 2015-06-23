@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:lang="http://www.springframework.org/schema/lang"
+
+	xsi:schemaLocation="http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	   http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd">
+
+	
+     <routeContext id="ingest-primitives"   xmlns="http://camel.apache.org/schema/spring">
+	    
+			<route id="extract-image-dimensions">
+				<from uri="direct:extract-image-dimensions"/>
+     			 <setHeader headerName="LibertasImageHeight">
+     				<groovy>javax.imageio.ImageIO.read(new java.io.File(request.headers.CamelFileAbsolutePath)).getHeight()</groovy>
+     			</setHeader>
+     			 <setHeader headerName="LibertasImageWidth">
+     				<groovy>javax.imageio.ImageIO.read(new java.io.File(request.headers.CamelFileAbsolutePath)).getWidth()</groovy>
+     			</setHeader> 
+			</route>
+			
+
+			<route id="extract-image-type">
+				<from uri="direct:extract-image-type"/>
+     		     <setHeader headerName="LibertasImageType">
+     				<groovy>
+   						import java.util.regex.*
+     					path=request.headers.CamelFileAbsolutePath.toLowerCase()
+     					type='{{LibertasImageTypeDefault}}'
+     					if(!'{{LibertasImageTypeRegex}}'.trim().equals('')){
+	     					Pattern pattern = Pattern.compile('{{LibertasImageTypeRegex}}');
+							Matcher matcher = pattern.matcher(path.replace("\\","/"));
+							type=matcher.find()?matcher.group(1):type
+     					}else{
+	     					type=path.contains('thumb')?'Thumbnail':type
+	     					type=path.contains('artwork')?'Artwork':type
+	     					type=path.contains('scrubber')?'Scrubber':type
+	     					type=path.contains('cover')?'Cover Image':type
+	     					type=path.contains('banner')?'Banner':type
+     					}
+     				</groovy>
+     			</setHeader>
+			</route>
+			
+			
+			<route id="extract-api-key">
+				<from uri="direct:extract-api-key"/>
+     			<setHeader headerName="apiKey">
+	     				<groovy>
+	     					import java.util.regex.*
+	     					if(!'{{LibertasAPIKeyRegex}}'.equals('')){
+	     						Pattern pattern = Pattern.compile('{{LibertasAPIKeyRegex}}');
+								Matcher matcher = pattern.matcher(request.headers.CamelRemoteAbsolutePath.replace("\\","/"));
+								matcher.find()?matcher.group(1):null
+							}else{
+		     					'{{apiKey}}'
+							}
+	     				</groovy>
+     			</setHeader>     			
+			</route>
+			
+			<route id="extract-bind-id-by-file-name">
+				<from uri="direct:extract-bind-id-by-file-name"/>
+				<setHeader headerName="LibertasBindID">
+     				<groovy>
+     					import java.util.regex.*
+     					Pattern pattern = Pattern.compile('{{LibertasBindingRegex}}');
+						Matcher matcher = pattern.matcher(request.headers.CamelRemoteAbsolutePath.replace("\\","/"));
+						matcher.find()?matcher.group(1):null
+     				</groovy>
+     			</setHeader>
+     			<validate>
+     				<simple>${headers.LibertasBindID} != null</simple>
+     			</validate>
+     			<log loggingLevel="INFO" message="Bind ID found in file path:${headers.LibertasBindID}"/>
+			</route>
+
+			<route id="extract-bind-id-by-productid">
+				<from uri="direct:extract-bind-id-by-product-id"/>
+				<validate><simple>${headers.LibertasProductID} != null</simple></validate>	
+                <to uri="stack:push"/>
+				<to uri="headers:backup"/>
+                <setHeader headerName="Exchange.HTTP_METHOD">
+                	<simple>GET</simple>
+                </setHeader>
+                <setHeader headerName="Exchange.HTTP_URI">
+                	 <groovy>"{{LibertasSOLRSelectURL}}?wt=json&amp;fl=bindId&amp;q=id:"+request.headers.LibertasBackup.LibertasProductID+"%20AND%20apiKey:"+request.headers.LibertasBackup.apiKey</groovy>
+                </setHeader>
+                <to uri="http4://dummyhost?disableStreamCache=false&amp;headerFilterStrategy=libertasHeaderFilterStrategy"/>
+                <to uri="headers:restore"/>
+                <removeHeaders pattern="Exchange.CONTENT_ENCODING"/>
+                <unmarshal ref="json"/>
+                <setHeader headerName="LibertasBindID">
+                	<groovy>request.body.response.docs[0].bindId[0]</groovy>
+                </setHeader>
+                <to uri="stack:pop"/>
+     			<validate>
+     				<simple>${headers.LibertasBindID} != null</simple>
+     			</validate>
+     			<log loggingLevel="INFO" message="Bind ID found in file path:${headers.LibertasBindID}"/>
+			</route>
+
+			<route id="extract-or-create-product-id">
+				<from uri="direct:extract-or-create-product-id"/>
+				<log message="Started extracting product Id"/>
+				<validate><simple>${headers.LibertasProductID} == null</simple></validate>
+				<removeHeaders pattern="CamelHttp*"/>
+ 				<removeHeaders pattern="org.restlet.http*"/>
+                <setHeader headerName="Exchange.HTTP_METHOD">
+                	<simple>GET</simple>
+                </setHeader>
+                <log message="Stack pushed"/>
+                <to uri="stack:push"/>
+            	<transform><simple>null</simple></transform>
+                <setHeader headerName="Exchange.HTTP_URI">
+                	 <groovy>"{{LibertasSOLRSelectURL}}?wt=json&amp;fl=id&amp;q=bindId:"+request.headers.LibertasBindID+"%20AND%20apiKey:"+request.headers.apiKey+"&amp;headerFilterStrategy=#libertasHeaderFilterStrategy"</groovy>
+                </setHeader>
+                <log message="Calling SOLR with URL:${headers.CamelHttpUri}"/>
+                <to uri="http4://dummyhost"/>
+                <removeHeaders pattern="Exchange.CONTENT_ENCODING"/>
+                <log message="SOLR call completed"/>
+                <unmarshal ref="json"/>
+                <log message="Unmarshalling completed"/>
+                <setHeader headerName="LibertasProductID">
+                	<groovy>request.body.response.numFound==0?UUID.randomUUID().toString():request.body.response.docs[0].id</groovy>
+                </setHeader>
+				<to uri="stack:pop"/>
+			</route>
+
+     		<route id="update-complete-product-metadata-route">
+				<from uri="direct:update-complete-product-metadata-route"/>
+			    <convertBodyTo type="java.lang.String"/>
+				<to uri="direct:extract-bind-id-by-product-id"/>
+				<to uri="direct:post-metadata-to-solr"/>
+     		 	<to uri="direct:update-solr-blob"/> 
+     		</route>
+     		
+     		<route id="create-product-route">
+				<from uri="direct:create-product-route"/>
+				<log message="directcreate-product received production request:${body}" loggingLevel="INFO"/>
+				
+			    <convertBodyTo type="java.lang.String"/>
+			    <log message="Body converted to string" />
+			    
+				<to uri="direct:extract-or-create-product-id"/>
+				<log message="Product ID inferred; now posting to SOLR" />
+				<to uri="direct:post-metadata-to-solr"/>
+				<log message="Product posted to SOLR; Sending update now" />
+				
+     		 	<to uri="direct:update-solr-blob"/> 
+     		 	<log message="directcreate-product completed production request:${body}" loggingLevel="INFO"/>
+				
+     		</route>
+     		
+     		<route id="ingest-metadata-route">
+				<from uri="direct:ingest-metadata-route"/>
+      			<convertBodyTo type="java.lang.String"/>
+				<to uri="direct:extract-api-key"/>
+<!-- 				<to uri="direct-vm:store-api-key-to-inprogressdb"/>
+ -->				<to uri="direct:extract-bind-id-by-file-name"/>
+				<to uri="direct:extract-or-create-product-id"/>
+				<to uri="direct:post-metadata-to-solr"/>
+     		 	<to uri="direct:update-solr-blob"/> 
+<!--     		 	 <to uri="direct-vm:store-api-key-to-idempotentdb"/>
+ -->     		</route>
+
+     		<route id="post-metadata-to-solr">
+				<from uri="direct:post-metadata-to-solr"/>
+     			<log loggingLevel="INFO" message="\n\n\n\n\n\nIngested file converted to JSON:${body}"/>
+     			<transform>
+     				<groovy>
+     					def toCamelCase(m){
+                            if(m instanceof Map){
+                                return m.collectEntries{k,v->; [k.toUpperCase().equals(k)?k:((k.toString().substring(0,1).toLowerCase()+k.toString().substring(1)).replace('ID','Id')),toCamelCase(v)]}
+                            }
+                            else if(m instanceof Collection || m instanceof List){
+                                    return m.collect{toCamelCase(it)}
+                            }else return m
+                         }
+     					
+     					request.body= (request.body instanceof String)?org.json.simple.JSONValue.parse(request.body):request.body
+	     				request.body=toCamelCase(request.body)
+	     				request.body.productId=request.headers.LibertasProductID
+	     				def details=request.body+[:]
+	     				request.body.remove('purchaseOptionList')
+	     				blob=((org.json.simple.JSONObject)request.body).toJSONString()
+	     				request.body=request.body.collectEntries{k, v -> [k.toLowerCase(), (v in List &amp;&amp; !{{LibertasOverwriteList}})?[add:v]:v]}
+	     				request.body=request.body.subMap('{{LibertasSearchableFields}}'.toLowerCase().replace(' ','').split(','))
+	     				request.body=request.body.findAll{it.value !=null}
+	     				request.body.blob=blob
+	     				def metadataVersion=details.metadataVersion
+	     				request.body.details=((org.json.simple.JSONObject)details).toJSONString()
+	     				((org.json.simple.JSONObject)([add:[doc:request.body+=[id:request.headers.LibertasProductID,metadataVersion:metadataVersion==null?'v0':metadataVersion,apiKey:[set:request.headers.apiKey], bindId:[set:request.headers.LibertasBindID]]]])).toJSONString()
+	     			</groovy>
+     			</transform>
+     			<to uri="headers:backup"/>
+     			<log message="Message to be sent to SOLR:${body}"/>
+    	        
+     			<setHeader headerName="Exchange.HTTP_METHOD">
+                	<simple>POST</simple>
+                </setHeader>
+     			<setHeader headerName="Exchange.CONTENT_TYPE">
+     				<constant>application/json</constant>
+     			</setHeader>
+     			<to uri="{{LibertasSOLRUpdateURL}}?commit=true&amp;headerFilterStrategy=#libertasHeaderFilterStrategy"/>
+     			<to uri="headers:restore"/>
+     		</route>
+
+     		<route id="update-solr-blob">
+     			<from uri="direct:update-solr-blob"/>
+				<to uri="headers:backup"/>
+                <setHeader headerName="Exchange.HTTP_METHOD">
+                	<simple>GET</simple>
+                </setHeader>
+                <setHeader headerName="Exchange.HTTP_URI">
+                	 <groovy>"{{LibertasSOLRSelectURL}}?wt=json&amp;fl=blob,details,images,previews,videos&amp;q=id:"+request.headers.LibertasBackup.LibertasProductID+"%20AND%20apiKey:"+request.headers.LibertasBackup.apiKey+"&amp;headerFilterStrategy=#libertasHeaderFilterStrategy"</groovy>
+                </setHeader>
+                <to uri="http4://dummyhost?disableStreamCache=false&amp;headerFilterStrategy=#libertasHeaderFilterStrategy"/>
+                <to uri="headers:restore"/>
+                <removeHeaders pattern="Exchange.CONTENT_ENCODING"/>
+                <unmarshal ref="json"/>
+            	<transform>
+					<groovy>
+		        		blob=request.body?.response?.docs[0]?.blob==null?[:]:request.body?.response?.docs[0]?.blob?.collect{org.json.simple.JSONValue.parse(it)}[0]
+						blob.imageList=request.body?.response?.docs[0]?.images==null?[:]:request.body?.response?.docs[0]?.images?.collect{org.json.simple.JSONValue.parse(it)}
+						blob.previewList=request.body?.response?.docs[0]?.previews==null?[:]:request.body?.response?.docs[0]?.previews?.collect{org.json.simple.JSONValue.parse(it)}
+						blob.mediaList=request.body?.response?.docs[0]?.videos==null?[:]:request.body?.response?.docs[0]?.videos?.collect{org.json.simple.JSONValue.parse(it)}
+						
+						details=request.body?.response?.docs[0]?.details==null?[:]:request.body?.response?.docs[0]?.details?.collect{org.json.simple.JSONValue.parse(it)}[0]
+						details.imageList=blob.imageList+[]
+						details.previewList=blob.previewList+[]
+						details.mediaList=blob.mediaList+[]
+						
+						request.headers.LibertasDetails=details
+						request.headers.LibertasBlob=blob
+						org.json.simple.JSONObject.toJSONString([add:[doc:[id:request.headers.LibertasProductID,blob:[set:org.json.simple.JSONObject.toJSONString(blob)],details:[set:org.json.simple.JSONObject.toJSONString(details)]]]])     		
+		        	</groovy>
+		        </transform>
+     			<log message="Updated blob:${body}"/>
+				<to uri="headers:backup"/>
+    	        
+   				<removeHeaders pattern="CamelHttp*"/>
+ 				<setHeader headerName="Exchange.HTTP_METHOD">
+                	<simple>POST</simple>
+                </setHeader>
+   				<setHeader headerName="Exchange.CONTENT_TYPE">
+     				<constant>application/json</constant>
+     			</setHeader>
+     			<to uri="{{LibertasSOLRUpdateURL}}?commit=true&amp;headerFilterStrategy=#libertasHeaderFilterStrategy"/>
+				<to uri="headers:restore"/>
+     			<transform><simple>${headers.LibertasBlob}</simple></transform>
+     		</route>
+
+     		<route id="ingest-image-route">
+				<from uri="direct:ingest-image-route"/>
+				<log message="Processing Image ${headers.CamelFileAbsolutePath}"/>
+				<to uri="direct:extract-api-key"/>
+<!-- 				<to uri="direct-vm:store-api-key-to-inprogressdb"/>
+ -->				<to uri="direct:extract-bind-id-by-file-name"/>
+				<to uri="direct:extract-or-create-product-id"/>
+				<to uri="direct:extract-image-type"/>
+				<to uri="direct:extract-image-dimensions"/>
+				<setHeader headerName="UUID"><groovy>UUID.randomUUID().toString()</groovy></setHeader>
+				<log message="Sending file to:{{LibertasS3LocalTempDirectory}}/${headers.UUID}/${headers.CamelFileNameOnly}"/>
+				<to uri="file://{{LibertasS3LocalTempDirectory}}?fileName=${headers.UUID}/${headers.CamelFileNameOnly}"/>
+				<setHeader headerName="LibertasImageURL"><simple>{{LibertasCDNBaseURL}}/{{LibertasS3ImageBucketName}}/${headers.UUID}/${headers.CamelFileNameOnly}</simple></setHeader>
+     			<transform><groovy>org.json.simple.JSONObject.toJSONString([add:[doc:[apiKey:[set:request.headers.apiKey],bindId:[set:request.headers.LibertasBindID],id:request.headers.LibertasProductID,images:[add:org.json.simple.JSONObject.toJSONString([imageType:request.headers.LibertasImageType,imageHeight:request.headers.LibertasImageHeight,imageWidth:request.headers.LibertasImageWidth,imageURL:request.headers.LibertasImageURL])]]]])</groovy></transform>
+     			<to uri="headers:backup"/>
+     			<setHeader headerName="Exchange.CONTENT_TYPE">
+     				<constant>application/json</constant>
+     			</setHeader>
+     			<setHeader headerName="Exchange.HTTP_METHOD"><constant>POST</constant></setHeader>
+				<log message="Posting Image ${body}. Destination URL:{{LibertasSOLRUpdateURL}}?commit=true&amp;headerFilterStrategy=#libertasHeaderFilterStrategy"/>
+     			<to uri="{{LibertasSOLRUpdateURL}}?commit=true&amp;headerFilterStrategy=#libertasHeaderFilterStrategy"/>
+     			<to uri="headers:restore"/>
+				<log message="Starting updating blob"/>
+     			<to uri="direct:update-solr-blob" />
+<!--     			<to uri="direct-vm:store-api-key-to-idempotentdb"/>
+ -->			</route>
+     </routeContext>
+</beans>

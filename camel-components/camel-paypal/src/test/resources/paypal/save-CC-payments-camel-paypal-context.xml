@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:broker="http://activemq.apache.org/schema/core"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<bean id="gsonCreditCard" class="org.apache.camel.component.gson.GsonDataFormat">
+		<property name="unmarshalType" value="com.paypal.api.payments.CreditCard" />
+		<property name="fieldNamingPolicy" value="LOWER_CASE_WITH_UNDERSCORES" />
+	</bean>
+
+	<camelContext id="camelContext" xmlns="http://camel.apache.org/schema/spring">
+		<route>
+			<from uri="direct:startsaveCCPayment" />
+			<log message="message body: ${body}" />
+			<log message="message headers: ${headers}" />
+			<to uri="paypal:simplePayment?mode=sandbox&amp;clientId=ARmkNhDWBUmrcka7o5dS7SdFEyRzPYJF9sgFAh_38J8NqkXiFwV8zxmDCg2r&amp;clientSecret=EIYAXRA4Iia9szKvjeoVFwE4leV8Mw-vTBvtCdV9OLzMExVONDLzZGQ7tY1T" />
+			<log message="CamelPaypalSavedCC: ${headers.CamelPaypalSavedCC}" />
+		</route>
+	</camelContext>
+
+</beans>
